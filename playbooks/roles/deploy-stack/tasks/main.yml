@@ -4,10 +4,11 @@
     suffix: deploji_
   register: tempdir
 
-- name: Copy stack files to remote machine
-  copy:
-    src: "stacks/{{app}}/"
+- name: Template stack files
+  template:
+    src: "{{item}}"
     dest: "{{tempdir.path}}/"
+  with_fileglob: "stacks/{{app}}/*"
 
 - name: Deploy stack
   shell: docker stack deploy -c docker-compose.yml {{environment_name}}_{{app}}

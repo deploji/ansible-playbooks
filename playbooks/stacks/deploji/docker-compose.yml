@@ -6,7 +6,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.port=80"
-        - "traefik.frontend.rule=PathPrefixStrip:/"
+        - "traefik.frontend.rule=Host:{{acme_domain}}"
     networks:
       - traefik_net
 
