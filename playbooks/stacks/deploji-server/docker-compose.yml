@@ -1,0 +1,57 @@
+version: "3.4"
+services:
+  server:
+    image: deploji/deploji-server:${SERVICE_VERSION}
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.port=8000"
+        - "traefik.docker.network=traefik_net"
+        - "traefik.frontend.rule=PathPrefixStrip:/api/"
+    environment:
+      AMQP_URL: amqp://guest:guest@rabbit:5672/
+      DB_HOST: postgres
+    volumes:
+      - storage:/root/storage
+    networks:
+      - traefik_net
+      - default
+
+  postgres:
+    image: postgres:9.6
+    environment:
+      POSTGRES_DB: deploji
+      POSTGRES_USER: deploji
+      POSTGRES_PASSWORD: deploji
+    ports:
+      - 5432
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  rabbit:
+    image: rabbitmq:3-management
+    configs:
+      - source: rabbit_config
+        target: /etc/rabbitmq/enabled_plugins
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.ws.port=15674"
+        - "traefik.ws.frontend.rule=PathPrefixStrip:/stomp/"
+        - "traefik.web.port=15672"
+        - "traefik.web.frontend.rule=PathPrefixStrip:/rabbit/"
+    networks:
+      - traefik_net
+
+configs:
+  rabbit_config:
+    file: enabled_plugins
+
+volumes:
+  dbdata:
+  storage:
+
+networks:
+  traefik_net:
+    external: true
+  default:

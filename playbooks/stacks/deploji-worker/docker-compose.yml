@@ -1,0 +1,9 @@
+version: "3.4"
+services:
+  worker:
+    image: deploji/deploji-worker:${SERVICE_VERSION}
+    environment:
+      AMQP_URL: amqp://guest:guest@rabbit:5672/
+      DB_HOST: postgres
+    volumes:
+      - storage:/root/storage

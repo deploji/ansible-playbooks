@@ -1,0 +1,15 @@
+version: "3.4"
+services:
+  front:
+    image: deploji/deploji:${SERVICE_VERSION}
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.port=80"
+        - "traefik.frontend.rule=PathPrefixStrip:/"
+    networks:
+      - traefik_net
+
+networks:
+  traefik_net:
+    external: true

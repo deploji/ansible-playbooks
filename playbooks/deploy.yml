@@ -1,0 +1,7 @@
+---
+- hosts: "{{app}}"
+  become: true
+  tasks:
+    - include_role:
+        name: deploy-stack
+      when: "deploy_role == 'deploy-stack'"

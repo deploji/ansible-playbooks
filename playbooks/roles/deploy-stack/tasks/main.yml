@@ -1,0 +1,17 @@
+- name: create temporary dir
+  tempfile:
+    state: directory
+    suffix: deploji_
+  register: tempdir
+
+- name: Copy stack files to remote machine
+  copy:
+    src: "stacks/{{app}}/"
+    dest: "{{tempdir.path}}/"
+
+- name: Deploy stack
+  shell: docker stack deploy -c docker-compose.yml {{environment_name}}_{{app}}
+  args:
+    chdir: "{{tempdir.path}}"
+  environment:
+    SERVICE_VERSION: "{{version}}"

@@ -1,0 +1,9 @@
+version: "3.4"
+services:
+  ansible-playbook:
+    build: .
+    image: deploji/ansible-playbooks
+    working_dir: /root/ansible-playbooks
+    volumes:
+      - ~/.ssh:/root/.ssh
+      - ./:/root/ansible-playbooks
