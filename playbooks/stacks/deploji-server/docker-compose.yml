@@ -27,6 +27,8 @@ services:
       - 5432
     volumes:
       - dbdata:/var/lib/postgresql/data
+    networks:
+      - default
 
   rabbit:
     image: rabbitmq:3-management
@@ -50,6 +52,7 @@ configs:
 volumes:
   dbdata:
   storage:
+    name: {{environment_name}}_deploji_repo_storage
 
 networks:
   traefik_net:

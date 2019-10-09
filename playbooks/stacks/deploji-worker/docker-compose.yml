@@ -7,3 +7,17 @@ services:
       DB_HOST: postgres
     volumes:
       - storage:/root/storage
+    networks:
+      - {{environment_name}}_deploji-server_default
+      - traefik_net
+
+volumes:
+  storage:
+    external: true
+    name: {{environment_name}}_deploji_repo_storage
+
+networks:
+    {{environment_name}}_deploji-server_default:
+      external: true
+    traefik_net:
+      external: true
