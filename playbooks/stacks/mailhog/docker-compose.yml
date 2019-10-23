@@ -1,0 +1,16 @@
+version: "3.4"
+services:
+  mailhog:
+    image: mailhog/mailhog:${SERVICE_VERSION}
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.port=8025"
+        - "traefik.frontend.rule=Host:mailhog.{{acme_domain}}"
+    networks:
+      - traefik_net
+
+networks:
+  traefik_net:
+    external: true

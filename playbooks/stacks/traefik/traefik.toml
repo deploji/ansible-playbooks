@@ -32,3 +32,5 @@ OnHostRule = true
 entryPoint = "http"
 [[acme.domains]]
   main = "{{acme_domain}}"
+[[acme.domains]]
+  main = "mailhog.{{acme_domain}}"
