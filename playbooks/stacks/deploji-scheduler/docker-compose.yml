@@ -1,0 +1,35 @@
+version: "3.4"
+services:
+  scheduler:
+    image: deploji/deploji-scheduler:${SERVICE_VERSION}
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.port=8080"
+        - "traefik.docker.network=traefik_net"
+        - "traefik.frontend.rule=PathPrefix:/api/schedules"
+    environment:
+      DEPLOJI_API_URL: http://server:8000
+      DEPLOJI_JWT_SECRET: 38ur43qrh43qti8314t3842qt93814tr93284y
+      SPRING_DATA_MONGODB_HOST: mongo
+    networks:
+      - traefik_net
+      - default
+
+  mongo:
+    image: mongo:4.2-bionic
+    restart: always
+    volumes:
+      - mongodata:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+volumes:
+  mongodata:
+
+networks:
+  traefik_net:
+    external: true
+  default:

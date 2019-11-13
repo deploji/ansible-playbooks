@@ -12,6 +12,7 @@ services:
     environment:
       AMQP_URL: amqp://guest:guest@rabbit:5672/
       DB_HOST: postgres
+      JWT_SECRET: 38ur43qrh43qti8314t3842qt93814tr93284y
     volumes:
       - storage:/root/storage
     networks:
