@@ -13,7 +13,7 @@ services:
         - "traefik.frontend.rule=PathPrefixStrip:/traefik/"
         - "traefik.port=8080"
     configs:
-      - source: traefik_conf2
+      - source: traefik_conf3
         target: /traefik.toml
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -26,7 +26,7 @@ networks:
     name: traefik_net
 
 configs:
-  traefik_conf2:
+  traefik_conf3:
     file: ./traefik.toml
 
 volumes:

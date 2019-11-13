@@ -1,0 +1,44 @@
+version: "3.4"
+services:
+  ghost:
+    image: ghost:${SERVICE_VERSION}
+    restart: always
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.port=2368"
+        - "traefik.docker.network=traefik_net"
+        - "traefik.frontend.rule=Host:blog.{{acme_domain}}"
+    volumes:
+      - ghost_content:/var/lib/ghost/content
+    environment:
+      # see https://docs.ghost.org/docs/config#section-running-ghost-with-config-env-variables
+      url: https://blog.{{acme_domain}}/
+      database__client: mysql
+      database__connection__host: db
+      database__connection__user: root
+      database__connection__password: {{ghost_password}}
+      database__connection__database: ghost
+    networks:
+      - traefik_net
+      - default
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ghost_password}}
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - default
+
+volumes:
+  dbdata:
+  ghost_content:
+
+networks:
+  traefik_net:
+    external: true
+  default:

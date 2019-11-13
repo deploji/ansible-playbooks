@@ -8,7 +8,7 @@ services:
         - "traefik.enable=true"
         - "traefik.port=8080"
         - "traefik.docker.network=traefik_net"
-        - "traefik.frontend.rule=PathPrefix:/api/schedules"
+        - "traefik.frontend.rule=Host:demo.{{acme_domain}};PathPrefix:/api/schedules"
     environment:
       DEPLOJI_API_URL: http://server:8000
       DEPLOJI_JWT_SECRET: 38ur43qrh43qti8314t3842qt93814tr93284y
